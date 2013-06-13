@@ -5,7 +5,6 @@
 #   git config --global core.excludesfile ~/.gitignore_global
 
 node_modules
-dist
 .tmp
 .sass-cache
 app/bower_components
@@ -37,7 +36,6 @@ doc/
 # Packages
 *.egg
 *.egg-info
-dist
 build
 eggs
 parts
