@@ -1,30 +1,36 @@
-import cherrypy
+import re
+import os.path
+import tornado.httpserver
 import tornado.ioloop
+import tornado.options
 import tornado.web
-import tornado.websocket
-import threading
-import time
+import unicodedata
 
-from klwebserver import WebController
-from klsocketserver import application
+from klwebserver import HomeHandler
+from klsocketserver import WSHandler 
 
-class WSThread(threading.Thread):
-	def run(self):
-		application.listen(8888)
-		tornado.ioloop.IOLoop.instance().start()
+from tornado.options import define, options
 
-class WebThread(threading.Thread):
-	def run(self):
-		cherrypy.quickstart(WebController(), '/', 'KeyListener.config')	
+define("port", default=9999, help="run on the given port", type=int)
 
-if __name__ == '__main__': 
-	web = WebThread()
-	web.daemon = True
-	web.start()
+class Application(tornado.web.Application):
+	def __init__(self):
+		handlers = [
+			(r"/", HomeHandler),
+    	(r'/ws', WSHandler),
+		]
+		settings = dict(
+			template_path=os.path.join(os.path.dirname(__file__), "templates"),
+			static_path=os.path.join(os.path.dirname(__file__), "static"),
+			debug=True,
+		)
+		tornado.web.Application.__init__(self, handlers, **settings)
 
-	sock = WSThread()
-	sock.daemon = True
-	sock.start()
-	
-	while True:
-		time.sleep(1)
+def main():	
+	server = tornado.httpserver.HTTPServer(Application())
+	server.listen(options.port)
+	server.listen(8888)
+	tornado.ioloop.IOLoop.instance().start()
+
+if __name__ == "__main__":
+	main()

@@ -26,8 +26,4 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 
 	def on_close(self):
 		print 'connection closed'
-			
-application = tornado.web.Application([
-    (r'/ws', WSHandler),
-])
 

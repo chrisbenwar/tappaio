@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset=utf-8>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1">
+<title></title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.1/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="static/js/KeyListener.js"> </script>
+
+<link rel="stylesheet" type="text/css" href="static/css/style.css" />
+
+</head>
+
+<body>
+
+<div id="logger" style="display: none">
+
+</div>
+<div id="mlcontrols">
+<ul class="controllist">
+	<li onclick="return klMouse.fireMouseClick('left');">Left</li>
+	<li onclick="return klMouse.fireMouseClick('right');">Right</li>
+	<li>Keys</li>
+</ul>
+</div>
+
+<div id="mouse" class="mouse">
+	
+</div>
+<div id="container" ng-app>
+	<div id="logger"></div>
+	<div id="keyboard" style="display: none">
+	<div ng-controller="KeyListenerControl">
+		<ul class="spreadlist">
+			<li ng-repeat="key in keys" onclick="fireKey('{{key.letter}}', 'cl');">
+				{{key.letter}}
+			</li>
+		</ul>
+	</div>
+	</div>
+</div>
+</body>
+</html>
