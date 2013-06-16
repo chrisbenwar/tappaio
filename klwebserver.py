@@ -22,7 +22,7 @@ class BaseHandler(tornado.web.RequestHandler):
 
 class HomeHandler(BaseHandler):
 	def get(self):
-		f = open(os.path.join('templates', 'keyboard.html'))
+		f = open('index.html')
 		content = f.read()
 		self.write(content)
 		self.flush()

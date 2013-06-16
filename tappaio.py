@@ -13,10 +13,12 @@ from tornado.options import define, options
 
 define("port", default=9999, help="run on the given port", type=int)
 
+print os.getcwd()
 class Application(tornado.web.Application):
 	def __init__(self):
 		handlers = [
 			(r"/", HomeHandler),
+			(r"/partials/(.*)", tornado.web.StaticFileHandler, {'path': 'partials/' }), 
     	(r'/ws', WSHandler),
 		]
 		settings = dict(

@@ -1,22 +1,8 @@
-function KeyListenerControl($scope) {
-	$scope.keys = [];
-	var aKey = ("A").charCodeAt(0);
-	var ZKey = ("z").charCodeAt(0);
-	for(var i = aKey; i <= ZKey; i++)
-	{
-		$scope.keys.push({
-			'letter': String.fromCharCode(i)
-		});
-	}
-}
+'use strict';
+var tappa = tappa || {};
 
-function fireKey(letter, type) {
-	//$('#logger').html($('#logger').html() + type);
-	$.ajax('/text', {
-		"data": {
-			"text": letter
-		}
-	});
+tappa.MouseCtrl = function($scope) {
+	klMouse.init();
 }
 
 var klMouse = {
@@ -33,24 +19,27 @@ var klMouse = {
 	usingTimer: false,
 	ws: null,
   moveMode: 'ocr',
-	
+	$mouseArea: null,
+	log: function(text) { },
 
 	init: function() {
-		klMouse.$mouse = $('#mouse');
-		console.log('init');
+		klMouse.$mouseArea = $('#mouseArea');
+		console.log('initializing mouse');
+
 		if(klMouse.usingTimer)
 		{
 			timer = window.setInterval(function() {
 				var x = klMouse.livePos.x;
 				var y = klMouse.livePos.y;
-				var inArea = x > 0 && y > 0 && x < klMouse.$mouse.width() && y < klMouse.$mouse.height();
+				var inArea = x > 0 && y > 0 && 
+					x < klMouse.$mouseArea.width() && y < klMouse.$mouse.height();
 
 				klMouse.log('tm' + x + ', ' + y);
 
 				if(klMouse.down && inArea)
 				{
-					var centreX = klMouse.$mouse.width() / 2;
-					var centreY = klMouse.$mouse.height() / 2;
+					var centreX = klMouse.$mouseArea.width() / 2;
+					var centreY = klMouse.$mouseArea.height() / 2;
 					var newX = (x - centreX) * klMouse.scale;
 					var newY = (y - centreY) * klMouse.scale;
 
@@ -60,34 +49,6 @@ var klMouse = {
 
 		}
 		klMouse.attach();
-
-		klMouse.createWebSocket();
-	},
-	createWebSocket: function() {
-		try {
-			klMouse.log('1');
-			klMouse.ws = new WebSocket("ws://192.168.0.3:8888/ws");
-			klMouse.log('2');
-
-			klMouse.ws.onopen = klMouse.wsOpen;
-			klMouse.log('3');
-
-		}
-		catch(exception) {
-			console.log(exception);
-		}
-		
-	},
-	wsOpen: function() {
-		klMouse.log('It opened!');
-
-		klMouse.ws.send('Hello there!')
-	},
-	log: function(text) {
-		return;
-		$l = $('#logger');
-		$l.show();
-		$l.html($l.html() + text);
 	},
 
 	fireMouseClick: function(button) {
@@ -97,9 +58,8 @@ var klMouse = {
 	},
 
 	fireMouse: function(type, x, y) {
-		klMouse.log('fire');
-		var $m = $('#mouse');
-
+		console.log('fire');
+		var $m = $('#mouseArea');
 		var xP = x / $m.width();
 		var yP = y / $m.height();	
 		
@@ -130,23 +90,13 @@ var klMouse = {
 
 			console.log(xP + ', ' + yP);
 			
-			/*
-			$.ajax('/mouse', {
-				"data": {
-					"evType": type,
-					"x": xP,
-					"y": yP,
-					"t": ts
-				}	
-			});		
-			*/
-			
-			klMouse.ws.send([type,xP,yP, ts].join())
+			tappa.socket.send([type,xP,yP, ts].join());
 		}
 	},
 
 	attach: function() {
-		var $m = $('#mouse');
+		console.log('attach');
+		var $m = $('#mouseArea');
 		$m.mousedown(function(e) {
 			klMouse.down = true;
 			klMouse.startX = e.offsetX

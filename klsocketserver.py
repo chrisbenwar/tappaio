@@ -15,6 +15,8 @@ class WSHandler(tornado.websocket.WebSocketHandler):
 		try:
 			evType, x, y, t = message.split(',')
 
+			print "Received event: " + evType
+
 			if evType == 'key':
 				self.klKeyboard.hitKey(x)
 			else:
