@@ -51,10 +51,10 @@ def main():
 
 	addrs = socket.gethostbyname_ex(socket.gethostname()) 
 	print([ip + ':9999' for ip in addrs[2] if not ip.startswith("127.")][:1])
+
 	server = tornado.httpserver.HTTPServer(Application())
 	server.listen(options.port)
 	server.listen(8888)
-
 
 if __name__ == "__main__":
 	main()
