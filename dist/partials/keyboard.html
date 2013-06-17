@@ -1,0 +1,20 @@
+<div id="mlcontrols">
+	<ul class="controllist">
+		<li>
+		<a href="#/mouse">
+			Mouse
+		</a>
+		</li>
+	</ul>
+</div>
+<div id="keyboard"> 
+<div>
+	<ul class="spreadlist">
+		<li ng-repeat="key in keys" onclick="tappa.fireKey('{{key.letter}}', 'cl');">
+			{{key.text}}
+		</li>
+		<li ng-repeat="key in specialKeys" class="specialKey" onclick="tappa.fireKey('{{key.letter}}', 'cl');">
+			{{key.text}}
+		</li>
+	</ul>
+</div>
