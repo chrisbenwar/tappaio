@@ -1,6 +1,5 @@
 'use strict';
 var tappa = tappa || {};
-
 (function(tappa) {
 	tappa.KeyboardCtrl = function($scope) {
 		$scope.keys = [];

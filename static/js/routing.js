@@ -18,8 +18,13 @@ angular.module(
         controller: tappa.MouseCtrl
       });
 
+      $routeProvider.when('/home', {
+        templateUrl: 'partials/home.html',
+        controller: tappa.HomeCtrl
+      });
+
       $routeProvider.otherwise({
-        redirectTo: '/keyboard'
+        redirectTo: '/home'
       });
     }
   ]

@@ -13,20 +13,20 @@ from klsocketserver import WSHandler
 from tornado.options import define, options
 
 def we_are_frozen():
-    """Returns whether we are frozen via py2exe.
-    This will affect how we find out where we are located."""
+		"""Returns whether we are frozen via py2exe.
+		This will affect how we find out where we are located."""
 
-    return hasattr(sys, "frozen")
+		return hasattr(sys, "frozen")
 
 
 def module_path():
-    """ This will get us the program's directory,
-    even if we are frozen using py2exe"""
+		""" This will get us the program's directory,
+		even if we are frozen using py2exe"""
 
-    if we_are_frozen():
-        return os.path.dirname(unicode(sys.executable, sys.getfilesystemencoding( )))
+		if we_are_frozen():
+				return os.path.dirname(unicode(sys.executable, sys.getfilesystemencoding( )))
 
-    return os.path.dirname(unicode(__file__, sys.getfilesystemencoding( )))
+		return os.path.dirname(unicode(__file__, sys.getfilesystemencoding( )))
 
 define("port", default=9999, help="run on the given port", type=int)
 
@@ -36,7 +36,7 @@ class Application(tornado.web.Application):
 		handlers = [
 			(r"/", HomeHandler),
 			(r"/partials/(.*)", tornado.web.StaticFileHandler, {'path': 'partials/' }), 
-    	(r'/ws', WSHandler),
+			(r'/ws', WSHandler),
 		]
 		settings = dict(
 			template_path=os.path.join(module_path(), "templates"),
